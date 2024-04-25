@@ -2,6 +2,7 @@
 
 namespace Alura\Doctrine\Entity;
 
+use Alura\Doctrine\Repository\DoctrineStudentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -12,13 +13,18 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\OneToMany;
 
 // #[Entity] => Atributo
-#[Entity]
+#[Entity(repositoryClass: DoctrineStudentRepository::class)]
 class Student
 {
   #[Id, GeneratedValue, Column]
   public int $id;
 
-  #[OneToMany(mappedBy: "student", targetEntity: Phone::class, cascade: ["persist", "remove"])]
+  #[OneToMany(
+    mappedBy: "student",
+    targetEntity: Phone::class,
+    cascade: ["persist", "remove"],
+    fetch: 'EAGER'
+  )]
   private Collection $phones;
 
   #[ManyToMany(targetEntity: Course::class, inversedBy:"students")]

@@ -10,33 +10,37 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $entityManager = EntityManagerCreator::createEntityManager();
 
 $studentRepository = $entityManager->getRepository(Student::class);
+$studentList = $studentRepository->studentsAndCourses();
 
-/** @var Student[] $studentList */
-$studentList = $studentRepository->findAll();
+// /** @var Student[] $studentList */
+// $studentList = $entityManager->getRepository(Student::class)->findAll();
 
 foreach ($studentList as $student) {
   echo "ID: $student->id\nNome: $student->name\n";
 
   if ($student->phones()->count() > 0) {
-    echo "Telefones:\n";
-  
+    echo "Telefones: ";
+
     echo implode(', ', $student->phones()
       ->map(fn (Phone $phone) => $phone->number)
       ->toArray());
-  
+
     // foreach ($student->phones() as $phone) {
     //   echo $phone->number . PHP_EOL;
     // }
   }
 
+  echo PHP_EOL;
+
   if ($student->courses()->count() > 0) {
-    echo "Cursos:\n";
-  
+    echo "Cursos: ";
+
     echo implode(', ', $student->courses()
       ->map(fn (Course $course) => $course->nome)
       ->toArray());
   }
 
+  echo PHP_EOL;
   echo PHP_EOL;
 }
 
@@ -51,3 +55,9 @@ foreach ($studentList as $student) {
 // var_dump($student3);
 
 // echo $studentRepository->count([]) . PHP_EOL;
+// echo count($studentList) . PHP_EOL;
+
+$studentClass = Student::class;
+$dql = "SELECT COUNT(student) FROM $studentClass student";
+$studentList = $entityManager->createQuery($dql)->getSingleScalarResult();
+var_dump($studentList);
