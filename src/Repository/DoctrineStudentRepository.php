@@ -7,12 +7,9 @@ use Doctrine\ORM\EntityRepository;
 
 class DoctrineStudentRepository extends EntityRepository
 {
-  // public function add(Student $student)
-  // {
-  //   $this->getEntityManager()->persist($student);
-  //   $this->getEntityManager()->flush();
-  // }
-
+  /**
+   * @return Student[]
+   */
   public function studentsAndCourses(): array
   {
     return $this->createQueryBuilder("student")
@@ -31,3 +28,7 @@ class DoctrineStudentRepository extends EntityRepository
     // return $this->getEntityManager()->createQuery($dql)->getResult();
   }
 }
+
+/*
+  Tipos diferentes de cache do Doctrine -> Cache de mapeamento (metadata), query, resultado e L2C.
+*/

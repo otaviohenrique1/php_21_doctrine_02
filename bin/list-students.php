@@ -36,7 +36,7 @@ foreach ($studentList as $student) {
     echo "Cursos: ";
 
     echo implode(', ', $student->courses()
-      ->map(fn (Course $course) => $course->nome)
+      ->map(fn (Course $course) => $course->name)
       ->toArray());
   }
 
@@ -58,6 +58,7 @@ foreach ($studentList as $student) {
 // echo count($studentList) . PHP_EOL;
 
 $studentClass = Student::class;
-$dql = "SELECT COUNT(student) FROM $studentClass student";
-$studentList = $entityManager->createQuery($dql)->getSingleScalarResult();
-var_dump($studentList);
+$dql = "SELECT COUNT(student) FROM $studentClass student WHERE SIZE(student.phones) = 2";
+$query = $entityManager->createQuery($dql)->enableResultCache(lifetime: 86400);
+$singleScalarResult = $query->getSingleScalarResult();
+var_dump($singleScalarResult);
